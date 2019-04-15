@@ -48,6 +48,21 @@ def validatePrometheusRule(args, v1, customApi, prometheusrule):
             json.dump(prometheusrule['spec'], output, sort_keys=True, indent=4, separators=(',', ': '))
             logging.debug(f"####### file:\n{output.getvalue()}")
             output.close()
+            if not args.dry_run:
+                try:
+                    customApi.patch_namespaced_custom_object(
+                        PROMETHEUS_CRD_GROUP,
+                        PROMETHEUS_CRD_VERSION,
+                        prometheusrule['metadata']['namespace'],
+                        PROMETHEUS_CRD_RULES_PLURAR,
+                        prometheusrule['metadata']['name'],
+                        {"metadata": {"labels": {args.label_key: None}}}
+                    )
+                except:
+                    logging.exception("Error trying to remove label")
+            else:
+                logging.info("Not removing labels due DryRun")
+
         else:
             if not args.dry_run:
                 try:
