@@ -74,11 +74,13 @@ parser.add_argument('--loop-seconds', dest='loop_seconds', required=False)
 parser.add_argument('--incluster-config', dest='incluster_config', action='store_true', required=False)
 parser.add_argument('--config-file', dest='config_file', required=False)
 parser.add_argument('--verbose', dest='verbose', action='store_true', required=False)
+parser.add_argument('--insecure-skip-tls-verify', dest='skip_tls_verify', action='store_true', required=False)
 parser.set_defaults(dry_run=False)
 parser.set_defaults(verbose=False)
 parser.set_defaults(label_key='prometheus-validator-result')
 parser.set_defaults(incluster_config=True)
 parser.set_defaults(loop_seconds=60)
+parser.set_defaults(skip_tls_verify=False)
 
 args = parser.parse_args()
 
@@ -94,10 +96,12 @@ logging.info(f"Dry run: {args.dry_run}")
 
 if (args.config_file is None):
     logging.info("Loading kubernetes incluster config")
-    config.load_incluster_config()
+    config.load_incluster_config(insecure-skip-tls-verify)
 else:
     logging.info("Loading kubernetes from default config file")
     config.load_kube_config(config_file=args.config_file)
+
+config.verify_ssl = args.skip_tls_verify
 
 v1 = client.CoreV1Api()
 customApi = client.CustomObjectsApi()
