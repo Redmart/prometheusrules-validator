@@ -1,4 +1,4 @@
-FROM quay.io/prometheus/prometheus:v2.6.1 as prometheus
+FROM prom/prometheus:v2.8.1 as prometheus
 
 FROM python:3.7.2-stretch as final
 
