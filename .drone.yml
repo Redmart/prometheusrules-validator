@@ -4,7 +4,6 @@ pipeline:
     image: plugins/docker
     repo: redmart/prometheusrules-validator
     auto_tag: true
-    dry_run: true
     secrets: [ docker_username, docker_password ]
     when:
       event: tag
