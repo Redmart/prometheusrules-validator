@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: prometheusrules-validator
+  name: prometheusrules-validator
+  namespace: monitoring
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheusrules-validator
+  namespace: monitoring
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["list"]
+- apiGroups: ["monitoring.coreos.com"]
+  resources: ["prometheusrules"]
+  verbs: ["get", "patch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheusrules-validator
+  namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheusrules-validator
+subjects:
+- kind: ServiceAccount
+  name: prometheusrules-validator
+  namespace: monitoring
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prometheusrules-validator
+  namespace: monitoring
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheusrules-validator
+    spec:
+      containers:
+      - image: redmart/prometheusrules-validator:0.1.0
+        imagePullPolicy: Always
+        name: prometheusrules-validator
+        args:
+          - python3
+          - ./prometheusrules-validator.py
+          - --incluster-config
+          - --insecure-skip-tls-verify
+      serviceAccountName: prometheusrules-validator
