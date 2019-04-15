@@ -96,7 +96,7 @@ logging.info(f"Dry run: {args.dry_run}")
 
 if (args.config_file is None):
     logging.info("Loading kubernetes incluster config")
-    config.load_incluster_config(insecure-skip-tls-verify)
+    config.load_incluster_config()
 else:
     logging.info("Loading kubernetes from default config file")
     config.load_kube_config(config_file=args.config_file)
