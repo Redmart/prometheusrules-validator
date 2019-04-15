@@ -8,3 +8,12 @@ pipeline:
     when:
       event: tag
 
+  docker-build-pr:
+    image: plugins/docker
+    repo: redmart/prometheusrules-validator
+    dry_run: true
+    auto_tag: true
+    when:
+      event: pull_request
+
+
