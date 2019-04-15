@@ -101,7 +101,7 @@ else:
     logging.info("Loading kubernetes from default config file")
     config.load_kube_config(config_file=args.config_file)
 
-config.verify_ssl = args.skip_tls_verify
+config.verify_ssl = not args.skip_tls_verify
 
 v1 = client.CoreV1Api()
 customApi = client.CustomObjectsApi()
