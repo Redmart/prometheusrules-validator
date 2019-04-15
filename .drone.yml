@@ -1,12 +1,11 @@
 pipeline:
 
-  release_server:
-    image: plugins/ecr
-    repo: devops/aliyun-aws-tunnel-monitor
-    secrets: [ ecr_access_key, ecr_secret_key ]
-    default_tags: true
-    environment:
-      - ECR_CREATE_REPOSITORY=true
-      - ECR_REGION=ap-southeast-1
+  push-docker-tags:
+    image: plugins/docker
+    repo: redmart/prometheusrules-validator
+    auto_tag: true
+    dry-run: true
+    secrets: [ docker_username, docker_password ]
     when:
       event: tag
+
