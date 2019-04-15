@@ -107,7 +107,7 @@ parser.add_argument('--verbose', dest='verbose', action='store_true', required=F
 parser.add_argument('--insecure-skip-tls-verify', dest='skip_tls_verify', action='store_true', required=False)
 parser.set_defaults(dry_run=False)
 parser.set_defaults(verbose=False)
-parser.set_defaults(label_key='prometheus-validator-result')
+parser.set_defaults(label_key='redmart.com/prometheusrules-validator-result')
 parser.set_defaults(incluster_config=True)
 parser.set_defaults(loop_seconds=60)
 parser.set_defaults(skip_tls_verify=False)

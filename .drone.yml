@@ -15,5 +15,3 @@ pipeline:
     auto_tag: true
     when:
       event: pull_request
-
-
