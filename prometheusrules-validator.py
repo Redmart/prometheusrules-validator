@@ -102,7 +102,11 @@ else:
     config.load_kube_config(config_file=args.config_file)
 
 logging.info(f"SSL Verify: {not args.skip_tls_verify}")
-config.verify_ssl = not args.skip_tls_verify
+if args.skip_tls_verify:
+    conf = client.Configuration()
+    conf.verify_ssl = False
+    conf.debug = False
+    client.Configuration.set_default(conf)
 
 v1 = client.CoreV1Api()
 customApi = client.CustomObjectsApi()
